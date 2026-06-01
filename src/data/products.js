@@ -1,0 +1,68 @@
+const products = [
+  {
+    id: 1,
+    name: "Wireless Headphones",
+    price: 2999,
+    category: "Electronics",
+    image: "https://picsum.photos/seed/headphones/300/200",
+    description: "Premium sound quality with noise cancellation.",
+  },
+  {
+    id: 2,
+    name: "Running Shoes",
+    price: 1499,
+    category: "Sports",
+    image: "https://picsum.photos/seed/shoes/300/200",
+    description: "Lightweight and breathable for long runs.",
+  },
+  {
+    id: 3,
+    name: "Mechanical Keyboard",
+    price: 3499,
+    category: "Electronics",
+    image: "https://picsum.photos/seed/keyboard/300/200",
+    description: "Tactile switches, RGB backlit.",
+  },
+  {
+    id: 4,
+    name: "Yoga Mat",
+    price: 799,
+    category: "Sports",
+    image: "https://picsum.photos/seed/yogamat/300/200",
+    description: "Non-slip surface, 6mm thick.",
+  },
+  {
+    id: 5,
+    name: "Coffee Maker",
+    price: 1999,
+    category: "Kitchen",
+    image: "https://picsum.photos/seed/coffee/300/200",
+    description: "Brews 12 cups, programmable timer.",
+  },
+  {
+    id: 6,
+    name: "Sunglasses",
+    price: 999,
+    category: "Fashion",
+    image: "https://picsum.photos/seed/sunglasses/300/200",
+    description: "UV400 protection, polarized lenses.",
+  },
+  {
+    id: 7,
+    name: "Blender",
+    price: 1299,
+    category: "Kitchen",
+    image: "https://picsum.photos/seed/blender/300/200",
+    description: "700W motor, 5 speed settings.",
+  },
+  {
+    id: 8,
+    name: "Backpack",
+    price: 1199,
+    category: "Fashion",
+    image: "https://picsum.photos/seed/backpack/300/200",
+    description: "30L capacity, water resistant.",
+  },
+];
+
+export default products;
