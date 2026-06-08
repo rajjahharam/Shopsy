@@ -2,22 +2,37 @@ import React from "react";
 
 function ProductCard({ product, onAddToCart }) {
   return (
-    <div className="border rounded-lg p-4 m-1">
-      <div className="text-center">
+    <div className="group relative flex flex-col bg-transparent overflow-hidden">
+      {/* Card Image Frame Container */}
+      <div className="w-full aspect-4/5 bg-neutral-50 dark:bg-neutral-900 overflow-hidden relative border border-neutral-100 dark:border-neutral-800">
         <img
           src={product.image}
           alt={product.name}
-          className="mb-2 w-full h-48 object-cover"
+          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
         />
-        <h1>{product.name}</h1>
-        <h1>{product.category}</h1>
-        <h1>${product.price}</h1>
-        <button
-          onClick={() => onAddToCart(product)}
-          className="bg-blue-600 text-white rounded-lg p-2"
-        >
-          Add to Cart
-        </button>
+
+        {/* Floating Quick Action Overlay (Fades upwards nicely on mouse hover) */}
+        <div className="absolute inset-x-0 bottom-0 p-4 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 bg-gradient-to-t from-black/30 via-transparent to-transparent">
+          <button
+            onClick={() => onAddToCart(product)}
+            className="w-full bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white hover:bg-neutral-900 hover:text-white dark:hover:bg-white dark:hover:text-neutral-900 text-xs font-bold uppercase tracking-widest py-3 transition-colors duration-200 shadow-md"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+
+      {/* Item Information Typography Section */}
+      <div className="mt-4 flex flex-col flex-1">
+        <span className="text-[10px] text-neutral-400 uppercase tracking-[0.2em] font-medium mb-1">
+          {product.category}
+        </span>
+        <h3 className="text-sm font-light text-neutral-800 dark:text-neutral-200 transition-colors line-clamp-1">
+          {product.name}
+        </h3>
+        <p className="mt-1.5 text-sm font-medium text-neutral-900 dark:text-white">
+          ${product.price}
+        </p>
       </div>
     </div>
   );
