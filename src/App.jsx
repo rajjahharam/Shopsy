@@ -4,8 +4,17 @@ import Navbar from "./components/Navbar";
 import Cart from "./components/Cart";
 import SearchBar from "./components/SearchBar";
 import CategoryFilter from "./components/CategoryFilter";
+import ShopByCategory from "./components/ShopByCategory";
+import FeaturedProducts from "./components/FeaturedProducts";
+import LatestBlog from "./components/LatestBlog";
+import Newsletter from "./components/Newsletter";
+import Footer from "./components/Footer";
 import { useEffect, useState } from "react";
-import { X } from "lucide-react"; // Imported for a clean cart closing action
+import { X, CheckCircle2 } from "lucide-react";
+
+// Import Toast Container & Styling Architecture
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [cart, setCart] = useState(() => {
@@ -17,6 +26,8 @@ function App() {
   }, [cart]);
 
   const [showCart, setShowCart] = useState(false);
+  const [showMenu, setShowMenu] = useState(false); // Controls the vertical Navigation hamburger drawer
+  const [showModal, setShowModal] = useState(false);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [darkMode, setDarkMode] = useState(() => {
@@ -34,10 +45,7 @@ function App() {
     } else {
       const updatedCart = cart.map((item) => {
         if (item.id === product.id) {
-          return {
-            ...item,
-            qty: item.qty + 1,
-          };
+          return { ...item, qty: item.qty + 1 };
         }
         return item;
       });
@@ -53,10 +61,7 @@ function App() {
   const increaseQty = (id) => {
     const updatedCart = cart.map((item) => {
       if (item.id === id) {
-        return {
-          ...item,
-          qty: item.qty + 1,
-        };
+        return { ...item, qty: item.qty + 1 };
       }
       return item;
     });
@@ -67,15 +72,18 @@ function App() {
     const updatedCart = cart
       .map((item) => {
         if (item.id === id) {
-          return {
-            ...item,
-            qty: item.qty - 1,
-          };
+          return { ...item, qty: item.qty - 1 };
         }
         return item;
       })
       .filter((item) => item.qty > 0);
     setCart(updatedCart);
+  };
+
+  const handleCheckoutSuccess = () => {
+    setShowCart(false);
+    setShowModal(true);
+    setCart([]);
   };
 
   const filteredProducts = products.filter((product) => {
@@ -91,7 +99,6 @@ function App() {
     ...new Set(products.map((product) => product.category)),
   ];
 
-  // Helper variable to calculate total numeric quantity for the Navbar
   const totalCartItems = cart.reduce((sum, item) => sum + item.qty, 0);
 
   return (
@@ -102,15 +109,23 @@ function App() {
           : "bg-white text-neutral-900"
       }`}
     >
-      {/* 1. Navbar */}
       <Navbar
         cartCount={totalCartItems}
-        toggleCart={() => setShowCart(!showCart)}
+        toggleCart={() => {
+          setShowCart(!showCart);
+          setShowMenu(false);
+        }}
+        toggleMenu={() => {
+          setShowMenu(!showMenu);
+          setShowCart(false);
+        }}
+        showMenu={showMenu}
         darkMode={darkMode}
         setDarkMode={setDarkMode}
+        setCategory={setCategory}
       />
 
-      {/* 2. Hero Editorial Banner Showcase */}
+      {/* Hero Editorial Banner Section (Top Target for Home Link) */}
       <section className="relative w-full h-[460px] bg-neutral-100 dark:bg-neutral-900 overflow-hidden flex items-center">
         <div className="absolute inset-0 z-0">
           <img
@@ -142,17 +157,34 @@ function App() {
         </div>
       </section>
 
-      {/* 3. Controls Layout Hub (Search & Filters) */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
-        <SearchBar search={search} setSearch={setSearch} />
-        <CategoryFilter
-          categories={categories}
-          category={category}
-          setCategory={setCategory}
-        />
+      {/* Linked Category Selection Anchor Trigger Section */}
+      <div id="category-section">
+        <ShopByCategory darkMode={darkMode} setCategory={setCategory} />
       </div>
 
-      {/* 4. Products Catalog Section */}
+      {/* Featured Products Carousel Section */}
+      <div id="featured-section">
+        <FeaturedProducts onAddToCart={handleAddToCart} darkMode={darkMode} />
+      </div>
+
+      {/* Controls Hub Anchor View Component / Main Products Section */}
+      <div
+        id="catalog-section"
+        className={`border-t pt-12 ${
+          darkMode ? "border-neutral-800" : "border-neutral-100"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SearchBar search={search} setSearch={setSearch} />
+          <CategoryFilter
+            categories={categories}
+            category={category}
+            setCategory={setCategory}
+          />
+        </div>
+      </div>
+
+      {/* Products Catalog Grid */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 pt-6">
         <div className="flex items-center justify-between border-b border-neutral-100 dark:border-neutral-900 pb-4 mb-8">
           <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400">
@@ -179,15 +211,24 @@ function App() {
         )}
       </main>
 
-      {/* 5. Elegant Sliding Drawer/Modal Cart Architecture */}
+      {/* Blog Section */}
+      <div id="blog-section">
+        <LatestBlog darkMode={darkMode} />
+      </div>
+      <div id="footer-section">
+        <Newsletter darkMode={darkMode} />
+        {/* Footer / Contact Section */}
+
+        <Footer darkMode={darkMode} />
+      </div>
+
+      {/* Cart Drawer Layer Panel Slideout */}
       {showCart && (
         <div className="fixed inset-0 z-50 overflow-hidden">
-          {/* Blur Backdrop Trigger */}
           <div
-            className="absolute inset-0 bg-neutral-950/40 backdrop-blur-sm transition-opacity"
+            className="absolute inset-0 bg-neutral-950/40 backdrop-blur-sm transition-opacity cursor-pointer"
             onClick={() => setShowCart(false)}
           />
-
           <div className="absolute inset-y-0 right-0 max-w-full flex pl-10">
             <div
               className={`w-screen max-w-md border-l shadow-2xl flex flex-col ${
@@ -196,33 +237,78 @@ function App() {
                   : "bg-white border-neutral-100"
               }`}
             >
-              {/* Modal Closing Top Header */}
               <div className="px-6 py-5 border-b border-neutral-100 dark:border-neutral-900 flex items-center justify-between">
                 <span className="text-xs font-bold uppercase tracking-widest text-neutral-400">
                   Your Selection
                 </span>
                 <button
                   onClick={() => setShowCart(false)}
-                  className="p-1 text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
+                  className="p-1 text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-pointer"
                   aria-label="Close cart"
                 >
                   <X size={18} strokeWidth={1.5} />
                 </button>
               </div>
-
-              {/* Injected Cart Items Layout Wrapper */}
               <div className="flex-1 overflow-y-auto">
                 <Cart
                   cart={cart}
                   increaseQty={increaseQty}
                   decreaseQty={decreaseQty}
                   removeFromCart={removeFromCart}
+                  onCheckoutSuccess={handleCheckoutSuccess}
                 />
               </div>
             </div>
           </div>
         </div>
       )}
+
+      {/* Order Complete Confirmation Modal */}
+      {showModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div
+            className="fixed inset-0 bg-neutral-950/60 backdrop-blur-md transition-opacity cursor-pointer"
+            onClick={() => setShowModal(false)}
+          />
+          <div
+            className={`relative w-full max-w-md transform p-8 text-center shadow-2xl border transition-all ${
+              darkMode
+                ? "bg-neutral-900 border-neutral-800 text-white"
+                : "bg-white border-neutral-100 text-neutral-900"
+            }`}
+          >
+            <div className="flex justify-center mb-4">
+              <CheckCircle2
+                size={48}
+                className="text-emerald-500 dark:text-emerald-400"
+                strokeWidth={1.25}
+              />
+            </div>
+            <h3 className="text-xl font-light uppercase tracking-wider mb-2">
+              Congratulations
+            </h3>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 max-w-xs mx-auto mb-6 leading-relaxed font-light">
+              Your order has been placed successfully. Thank you for supporting
+              artisan creators worldwide!
+            </p>
+            <button
+              onClick={() => setShowModal(false)}
+              className="w-full bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-neutral-100 text-xs font-bold uppercase tracking-widest py-3.5 transition-colors duration-300 cursor-pointer"
+            >
+              Continue Shopping
+            </button>
+          </div>
+        </div>
+      )}
+
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        theme={darkMode ? "dark" : "light"}
+      />
     </div>
   );
 }
