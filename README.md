@@ -1,16 +1,55 @@
-# React + Vite
+# Shopify. — Premium Artisan E-Commerce Marketplace
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern e-commerce storefront built with React, Tailwind CSS, and Lucide React, featuring responsive design, category-based product browsing, cart management, and smooth navigation.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+* Responsive and modern UI
+* Product category filtering
+* Featured products carousel
+* Shopping cart with LocalStorage persistence
+* Smooth scrolling navigation
+* Dual side drawers (Menu & Cart)
+* Dark mode support
+* Toast notifications with React Toastify
 
-## React Compiler
+## 🛠️ Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* React
+* Tailwind CSS
+* Lucide React
+* React Toastify
+* Vite
 
-## Expanding the ESLint configuration
+## 📂 Project Structure
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```text
+src/
+├── components/
+├── data/
+├── App.jsx
+└── main.jsx
+```
+
+## ⚙️ Installation
+
+```bash
+git clone <repository-url>
+cd Shopify
+npm install
+npm run dev
+```
+
+## 📦 Build
+
+```bash
+npm run build
+```
+
+## ✨ Highlights
+
+* Category-based product filtering
+* Interactive product carousel
+* Cart state management
+* Responsive layout
+* Reusable component architecture
