@@ -34,7 +34,7 @@ src/
 ## ⚙️ Installation
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/rajjahharam/Shopsy.git
 cd Shopify
 npm install
 npm run dev
